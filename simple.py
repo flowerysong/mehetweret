@@ -6,6 +6,7 @@ import time
 import luma.core.interface.serial
 import luma.oled.device
 import luma.core.render
+from PIL import ImageFont
 
 # For the sensor
 import smbus2
@@ -25,11 +26,13 @@ display_device = luma.oled.device.ssd1306(
 
 display_device.persist = True
 
+font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 18)
+
 while True:
     data = bme280.sample(bus, address, calibration_params)
 
     with luma.core.render.canvas(display_device) as canvas:
-        canvas.text((0, 15), '{:.2f} degF'.format((data.temperature * 9 / 5) + 32), fill="white")
-        canvas.text((0, 30), '{:.2f}% rH'.format(data.humidity), fill="white")
+        canvas.text((0, 15), '{:.2f} degF'.format((data.temperature * 9 / 5) + 32), fill="white", font=font)
+        canvas.text((0, 35), '{:.2f}% rH'.format(data.humidity), fill="white", font=font)
 
     time.sleep( 1 )
