@@ -35,4 +35,4 @@ while True:
         canvas.text((0, 15), '{:.2f} degF'.format((data.temperature * 9 / 5) + 32), fill="white", font=font)
         canvas.text((0, 35), '{:.2f}% rH'.format(data.humidity), fill="white", font=font)
 
-    time.sleep( 1 )
+    time.sleep(5)
