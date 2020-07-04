@@ -1,0 +1,10 @@
+[Unit]
+Description=Mehetweret control process
+
+[Service]
+Type=simple
+ExecStart=/usr/local/mehetweret/.venv/bin/python -u /usr/local/mehetweret/controller.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

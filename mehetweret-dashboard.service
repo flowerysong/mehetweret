@@ -1,0 +1,10 @@
+[Unit]
+Description=Mehetweret HTTP dashboard
+
+[Service]
+Type=simple
+ExecStart=/usr/local/mehetweret/.venv/bin/gunicorn --pythonpath /usr/local/mehetweret/dashboard app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
