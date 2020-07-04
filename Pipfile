@@ -9,7 +9,6 @@ name = "pypi"
 smbus2 = "*"
 flask = "*"
 gunicorn = "*"
-simple-pid = "*"
 
 [dev-packages]
 

@@ -5,8 +5,6 @@ import time
 
 from datetime import datetime
 
-from simple_pid import PID
-
 # To control the relays
 from RPi import GPIO
 
@@ -39,14 +37,6 @@ def main():
     temp_target = 52
     humid_target = 80
     tolerance = 0.25
-
-    humid_pid = PID(
-        1,
-        0.1,
-        0.05,
-        output_limits=(0, 16),
-        proportional_on_measurement=True,
-    )
 
     # Set up the sensor
     sensor_params = bme280.load_calibration_params(
@@ -84,8 +74,6 @@ def main():
         except:
             pass
 
-        humid_pid.setpoint = humid_target
-
         data = bme280.sample(i2c_bus, sensor_address, sensor_params)
 
         temp = (data.temperature * 9 / 5) + 32
@@ -100,20 +88,15 @@ def main():
             poweroff(fridge_pin)
             fridge_on = False
 
-        if time.time() - humid_ts >= 15:
-            humid_ts = time.time()
-            pid_res = humid_pid(humid)
-            print('PID result: {}'.format(pid_res))
-            if (pid_res > 0) and not humid_on:
-                print('Turning on humidifier')
-                poweron(humid_pin)
-                humid_on = True
-            humid_ts_off = humid_ts + pid_res
-
-        if humid_on and time.time() >= humid_ts_off:
+        if humid_on and (time.time() - humid_ts > 10):
             print('Turning off humidifier')
             poweroff(humid_pin)
             humid_on = False
+        elif (not humid_on) and (humid < humid_target) and (time.time() - humid_ts > 40):
+            print('Turning on humidifier, trying to get to {}'.format(humid_target))
+            poweron(humid_pin)
+            humid_on = True
+            humid_ts = time.time()
 
         with luma.core.render.canvas(display_device) as canvas:
             statline = ''
