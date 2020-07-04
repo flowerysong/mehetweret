@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "357a58fb64fe74cbad143d254fb6bfbbb25f1ef84d976814ea10366c31684d0b"
+            "sha256": "ccd43b97e6ab786dc255f8a97a66c7e1618e8ede7c9536d332358f555b5e87f6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -171,6 +171,14 @@
             ],
             "markers": "platform_system == 'Linux'",
             "version": "==0.7.0"
+        },
+        "simple-pid": {
+            "hashes": [
+                "sha256:25cfa3408a7b024e090dab00813866b46eca31452ecfc982a7078b4a4730686c",
+                "sha256:d1192b4c42ea5b3d278bb85b565841acb6292e60af2fb31f28c56eb8e704326d"
+            ],
+            "index": "pypi",
+            "version": "==0.2.4"
         },
         "smbus2": {
             "hashes": [
