@@ -63,7 +63,7 @@ def main():
     poweroff(humid_pin)
     fridge_on = False
     humid_on = False
-    humid_ts = time.time()
+    humid_ts = 0
 
     while True:
         try:
@@ -80,7 +80,7 @@ def main():
         humid = data.humidity
 
         if (temp > temp_target + 0.3) and not fridge_on:
-            print('Turning on refrigerator, trying to get to {}'.format(temp_target))
+            print('Turning on refrigerator')
             poweron(fridge_pin)
             fridge_on = True
         elif (temp < temp_target + 0.2) and fridge_on:
@@ -88,15 +88,23 @@ def main():
             poweroff(fridge_pin)
             fridge_on = False
 
-        if humid_on and (time.time() - humid_ts > 10):
-            print('Turning off humidifier')
-            poweroff(humid_pin)
-            humid_on = False
-        elif (not humid_on) and (humid < humid_target) and (time.time() - humid_ts > 40):
-            print('Turning on humidifier, trying to get to {}'.format(humid_target))
+        cur_time = time.time()
+        if humid_on:
+            if (humid > humid_target) or (cur_time >= humid_ts):
+                print('Turning off humidifier')
+                poweroff(humid_pin)
+                humid_on = False
+                humid_ts = cur_time + 30
+        elif (humid < humid_target) and (cur_time >= humid_ts):
+            humid_secs = int((humid_target - humid) * 5)
+            if humid_secs > 10:
+                humid_secs = 10
+            elif humid_secs < 3:
+                humid_secs = 3
+            print('Turning on humidifier for {} seconds'.format(humid_secs))
             poweron(humid_pin)
             humid_on = True
-            humid_ts = time.time()
+            humid_ts = cur_time + humid_secs
 
         with luma.core.render.canvas(display_device) as canvas:
             statline = ''
