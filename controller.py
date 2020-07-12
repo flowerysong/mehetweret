@@ -107,17 +107,15 @@ def main():
             humid_ts = cur_time + humid_secs
 
         with luma.core.render.canvas(display_device) as canvas:
-            statline = ''
+            statline = []
             if fridge_on:
-                statline = 'Cool'
+                statline.append('Cool')
             if humid_on:
-                if statline:
-                    statline += ' / '
-                statline += 'Humidify'
+                statline.append('Humidify')
 
             canvas.text(
                 (0, 0),
-                statline,
+                ' / '.join(statline),
                 fill='white',
                 font=smallfont,
             )
