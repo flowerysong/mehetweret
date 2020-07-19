@@ -36,7 +36,6 @@ def main():
 
     temp_target = 52
     humid_target = 80
-    tolerance = 0.25
 
     # Set up the sensor
     sensor_params = bme280.load_calibration_params(
